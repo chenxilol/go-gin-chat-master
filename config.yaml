@@ -1,0 +1,18 @@
+app:
+  port : 8322
+  upload_file_path : "uploads/file"
+  cookie_key:  "4238uihfieh49r3453kjdfg"
+  serve_type:  "GoServe"
+  debug_mod : "true"
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  config: charset=utf8mb4&parseTime=True&loc=Local&timeout=10s
+  db: go-gin-chat
+  user: root
+  password: "88888888"
+  log_lever: ""
+system:
+    host: 0.0.0.0
+    port: 8322
+    env: debug

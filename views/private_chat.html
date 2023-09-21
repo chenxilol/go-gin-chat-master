@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>go-gin-chat 聊天室</title>
+    <link rel="stylesheet" href="//cdn.staticfile.org/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/rolling/css/rolling.css">
+    <link rel="stylesheet" href="/static/stylesheets/style.css">
+    <link rel="stylesheet" href="/static/emoji/emojionearea.min.css">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+</head>
+<body id="body-room" class="room" data-uid="{{ .user_info.uid }}" data-username="{{ .user_info.username }}"
+      data-avatar_id="{{ .user_info.avatar_id }}" data-room_id="{{ .room_id }}">
+
+<div class="scrollbar-macosx">
+    <div id="mescroll" class="main container mescroll">
+        <div class="col-md-12">
+            <ul class="chat_info">
+
+                <li id="chat-list-li-top" class="systeminfo">
+                    <span style="cursor: pointer;">
+                         提示：点击加载更多消息
+                    </span>
+                </li>
+
+                <li id="hidden-chat-list-li-top" data-offset="100" data-list-cout="{{ .msg_list_count }}" style="display: none"></li>
+
+
+                {{$uid:= .user_info.uid}}
+                {{$nullSrl:= ""}}
+
+                {{range .msg_list}}
+
+                    {{if eq $uid .user_id}}
+
+                        <li class="right">
+                            <img src="/static/images/user/{{ .avatar_id }}.png" alt="">
+                            <b>{{ .username }}</b>
+                            <i>{{ .created_at }}</i>
+
+                            {{ if eq .image_url $nullSrl }}
+
+                            <div>{{ .content }}</div>
+                                {{else}}
+                            <div><img class="load-img" data-src="{{ .image_url }}" src="https://cdn.jsdelivr.net/gh/hezhizheng/static-image-hosting@master/image-hosting/20210420094013_LVZYIITUUVRWREEE.jpg"/></div>
+                                {{end}}
+                        </li>
+
+                    {{else}}
+
+                        <li class="left">
+                            <img src="/static/images/user/{{ .avatar_id }}.png" alt="">
+                            <b>{{ .username }}</b>
+                            <i>{{ .created_at }}</i>
+                            {{ if eq .image_url $nullSrl }}
+
+                                <div>{{ .content }}</div>
+                            {{else}}
+                                <div><img class="load-img" data-src="{{ .image_url }}" src="https://cdn.jsdelivr.net/gh/hezhizheng/static-image-hosting@master/image-hosting/20210420094013_LVZYIITUUVRWREEE.jpg"/></div>
+                            {{end}}
+                        </li>
+
+                    {{end}}
+                {{end}}
+
+
+            </ul>
+        </div>
+    </div>
+    <div class="input">
+        <div class="center">
+            <div class="tools">
+
+                <span class="glyphicon glyphicon-picture imgFileico"></span>
+
+                <input type="file" class="imgFileBtn hidden" accept="image/*">
+
+            </div>
+            <div class="text">
+                <div class="col-xs-12 col-sm-12">
+                    <input type="text" id="emojionearea2" placeholder="输入聊天信息...">
+                </div>
+            </div>
+            <div class="_submit">
+                <div class="col-xs-12 col-sm-12 text-right">
+                    <a id="subxx" role="button"><span class="glyphicon glyphicon-share-alt"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="//cdn.staticfile.org/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.staticfile.org/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/rolling/js/rolling.js"></script>
+<script type="text/javascript" src="/static/javascripts/websocket-heartbeat.js"></script>
+<script type="text/javascript" src="/static/javascripts/Public.js?t=2021628141400"></script>
+<script type="text/javascript" src="/static/emoji/emojionearea.min.js"></script>
+<script type="text/javascript" src="//cdn.staticfile.org/layer/3.1.1/layer.js"></script>
+<script type="text/javascript" src="/static/javascripts/load-msg-more.js?t=20201027141958"></script>
+
+<script>
+    $(document).ready(function () {
+        // 滚动到底部
+        $('.scrollbar-macosx.scroll-content.scroll-scrolly_visible').animate({
+            scrollTop: $('.scrollbar-macosx.scroll-content.scroll-scrolly_visible').prop('scrollHeight')
+        }, 500);
+    });
+</script>
+
+<script>
+    $("#emojionearea2").emojioneArea({
+        pickerPosition: "top",
+        tonesStyle: "radio",
+        events: {
+            keyup: function (editor, event) {
+                if (event.which == 13) {
+                    $('#subxx').click();
+                }
+            }
+        }
+    })
+</script>
+
+</html>
